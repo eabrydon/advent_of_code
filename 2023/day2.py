@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 
 data_loc = \
-  '/Users/evanbrydon/Documents/Documents/random_projects/advent_of_code/2023'
+  '/Users/evanbrydon/Documents/Documents/GitStuff/advent_of_code/2023'
 fn = 'day2_data.txt'
 
 data = pd.read_csv(f'{data_loc}/{fn}', delimiter =':', names = ['game','cube_data'])

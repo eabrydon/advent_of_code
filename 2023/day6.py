@@ -9,7 +9,7 @@ import numpy as np
 from functools import reduce
 def get_data():    
     data_loc = \
-      '/Users/evanbrydon/Documents/Documents/random_projects/advent_of_code/2023'
+      '/Users/evanbrydon/Documents/Documents/GitStuff/advent_of_code/2023'
     fn = 'day6_data.txt'
     f = open(f'{data_loc}/{fn}')
     data = f.read().split('\n')
