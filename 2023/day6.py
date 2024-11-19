@@ -7,9 +7,10 @@ Created on Mon Nov 18 15:59:41 2024
 """
 import numpy as np 
 from functools import reduce
+
 def get_data():    
     data_loc = \
-      '/Users/evanbrydon/Documents/Documents/GitStuff/advent_of_code/2023'
+      '/Users/evanbrydon/Documents/GitStuff/advent_of_code/2023'
     fn = 'day6_data.txt'
     f = open(f'{data_loc}/{fn}')
     data = f.read().split('\n')
@@ -38,3 +39,15 @@ def get_winning_product_lol(times, distances):
 winning_prod = get_winning_product(times, distances)
 print(f'Product of winning options: {winning_prod}')
 winning_prod_lol = get_winning_product_lol(times, distances)
+
+
+def get_data():    
+    data_loc = \
+      '/Users/evanbrydon/Documents/GitStuff/advent_of_code/2023'
+    fn = 'day6_data.txt'
+    f = open(f'{data_loc}/{fn}')
+    data = f.read().split('\n')
+    f.close()
+    times = data[0].split(':')[1].strip().split()
+    distances = data[1].split(':')[1].strip().split()
+    return [int(x) for x in times], [int(x) for x in distances]

@@ -11,7 +11,7 @@ import re
 import numpy as np
 
 data_loc = \
-  '/Users/evanbrydon/Documents/Documents/GitStuff/advent_of_code/2023'
+  '/Users/evanbrydon/Documents/GitStuff/advent_of_code/2023'
 fn = 'day1_data.txt'
 df = pd.read_csv(f'{data_loc}/{fn}', names = ['value'])
 
