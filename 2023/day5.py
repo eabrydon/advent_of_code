@@ -121,7 +121,7 @@ def put_numranges_through_map(input_ranges, m, name):
     return destination_ranges
 
 def put_numranges_through_map2(input_ranges, m, name):
-    # tried to simplify logic in this version
+    # tried to simplify logic and naming in this version
     destination_ranges = [] # list of tuples: (num, range_len)
     remaining_ranges = copy.copy(input_ranges)
     while_counter = 0
@@ -131,29 +131,31 @@ def put_numranges_through_map2(input_ranges, m, name):
             raise ValueError('infinite loop')
         for (in_st, in_r) in remaining_ranges:
             row_hit = False
+            in_e = in_st + in_r
             for row in m:
+                row_e = row[1] + row[2]
                 # check if any part of input range will map
-                if (in_st + in_r-1 >= row[1]) and (in_st <= row[1] + row[2]-1):
+                if (in_e-1 >= row[1]) and (in_st <= row_e-1):
                     row_hit = True
                     # input range lower bound >= map range lower bound
                     if in_st >= row[1]:
                         # case 1 - input range contained in map range
-                        if in_st + in_r <= row[1]+ row[2]:
+                        if in_e <= row_e:
                             destination_ranges.append((row[0] - row[1] + in_st, in_r))
                         # case 2 - input range ub scissors map range from above
-                        elif in_st + in_r > row[1]+ row[2]:
-                            destination_ranges.append((row[0]+in_st-row[1], row[1]+row[2]-in_st))
-                            input_ranges.append((row[1]+row[2]+1, in_st+in_r-row[1]-row[2]))
+                        elif in_e > row_e:
+                            destination_ranges.append((row[0]+in_st-row[1], row_e-in_st))
+                            input_ranges.append((row_e+1, in_e-row_e))
                     # input range lower bound < map range lower bound
                     elif in_st < row[1]:
                         # case 3 - input range envelops map range
                         input_ranges.append((in_st, row[1] - in_st))
-                        if in_st + in_r > row[1]+ row[2]:
+                        if in_e > row_e:
                             destination_ranges.append((row[0], row[2]))
-                            input_ranges.append((row[1]+row[2]+1, in_st+in_r-row[1]-row[2]))
+                            input_ranges.append((row_e+1, in_e-row_e))
                         # case 4 - input range ub scissors map range from below
-                        elif in_st + in_r-1 >= row[1]:
-                            destination_ranges.append((row[0], in_st + in_r - row[1]))
+                        elif in_e-1 >= row[1]:
+                            destination_ranges.append((row[0], in_e - row[1]))
             if not row_hit:
                 destination_ranges.append((in_st,in_r))
             input_ranges = input_ranges[1:]
