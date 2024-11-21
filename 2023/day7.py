@@ -9,14 +9,6 @@ Created on Tue Nov 19 13:00:14 2024
 import pandas as pd
 import numpy as np
 
-conversion_dict = {
-    'A':'e',
-    'K':'d',
-    'Q':'c',
-    'J':'b',
-    'T':'a',
-    }
-
 def get_data():    
     data_loc = \
       '/Users/evanbrydon/Documents/GitStuff/advent_of_code/2023/data'
@@ -83,26 +75,25 @@ def calc_winnings(hand_df):
     hand_df['winnings'] = hand_df.bid * hand_df.bid_mult
     return hand_df\
 
-
-hands, bids = get_data()  
-   
-hands_converted = convert_hands(hands, conversion_dict)
-hand_types = [get_hand_type(hand) for hand in hands_converted]           
-        
-hand_df = prep_df(hands_converted,bids,hand_types)
-hand_df = calc_winnings(hand_df)
-
-print(f'Total winnings: {np.sum(hand_df.winnings)}')
+def run_p1():
+    conversion_dict = {
+        'A':'e',
+        'K':'d',
+        'Q':'c',
+        'J':'b',
+        'T':'a',
+        }
+    hands, bids = get_data()  
+       
+    hands_converted = convert_hands(hands, conversion_dict)
+    hand_types = [get_hand_type(hand) for hand in hands_converted]           
+            
+    hand_df = prep_df(hands_converted,bids,hand_types)
+    hand_df = calc_winnings(hand_df)
+    
+    print(f'Total winnings: {np.sum(hand_df.winnings)}')
 
 # Part 2
-
-conversion_dict = {
-    'A':'e',
-    'K':'d',
-    'Q':'c',
-    'T':'b',
-    'J':'0',
-    }
     
 def adjust_counts(hd):
     try:
@@ -138,17 +129,27 @@ def assign_hand_type(cts):
         return 7
 
 
+def run_p2():
+    conversion_dict = {
+        'A':'e',
+        'K':'d',
+        'Q':'c',
+        'T':'b',
+        'J':'0',
+        }
+    hands, bids = get_data()  
+       
+    hands_converted2 = convert_hands(hands, conversion_dict)
+    
+    hand_dicts2 = [make_hand_dict(hand) for hand in hands_converted2]
+    adjusted_counts2 = [adjust_counts(hd) for hd in hand_dicts2]
+    hand_types2 = [assign_hand_type(ct) for ct in adjusted_counts2]           
+            
+    hand_df2 = prep_df(hands_converted2,bids,hand_types2)
+    hand_df2 = calc_winnings(hand_df2)
 
-hands, bids = get_data()  
-   
-hands_converted2 = convert_hands(hands, conversion_dict)
-
-hand_dicts2 = [make_hand_dict(hand) for hand in hands_converted2]
-adjusted_counts2 = [adjust_counts(hd) for hd in hand_dicts2]
-hand_types2 = [assign_hand_type(ct) for ct in adjusted_counts2]           
-        
-hand_df2 = prep_df(hands_converted2,bids,hand_types2)
-hand_df2 = calc_winnings(hand_df2)
-
-print(f'Total winnings p2: {np.sum(hand_df2.winnings)}')
-   
+    print(f'Total winnings p2: {np.sum(hand_df2.winnings)}')
+    
+if __name__ == '__main__':
+    run_p1()
+    run_p2()
