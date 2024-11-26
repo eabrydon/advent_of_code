@@ -13,8 +13,7 @@ import copy
 
 
 def get_data():    
-    data_loc = \
-      '/Users/evanbrydon/Documents/GitStuff/advent_of_code/2023/data'
+    data_loc = './data'
     fn = 'day5_data.txt'
     f = open(f'{data_loc}/{fn}')
     data = f.read()

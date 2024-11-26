@@ -10,8 +10,7 @@ import numpy as np
 import string
 
 def get_data():    
-    data_loc = \
-      '/Users/evanbrydon/Documents/GitStuff/advent_of_code/2023/data'
+    data_loc = './data'
     fn = 'day3_data.txt'
     f = open(f'{data_loc}/{fn}')
     data = [[c for c in line] for line in f]
@@ -141,8 +140,3 @@ if __name__ == '__main__':
     gear_ratios = get_gear_ratios(data)
     print(f'Part 2 Sum: {np.sum(gear_ratios)}')
         
-
-
-
-
-    

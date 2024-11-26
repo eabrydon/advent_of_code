@@ -8,8 +8,7 @@ Created on Mon Nov 18 15:59:41 2024
 import numpy as np 
 from functools import reduce
 def get_data():    
-    data_loc = \
-      '/Users/evanbrydon/Documents/GitStuff/advent_of_code/2023/data'
+    data_loc = './data'
     fn = 'day6_data.txt'
     f = open(f'{data_loc}/{fn}')
     data = f.read().split('\n')
@@ -39,6 +38,7 @@ winning_prod = get_winning_product(times, distances)
 print(f'Product of winning options: {winning_prod}')
 winning_prod_lol = get_winning_product_lol(times, distances)
 
+# Part 2
 
 def get_data_p2():    
     data_loc = \

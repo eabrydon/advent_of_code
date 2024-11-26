@@ -10,8 +10,7 @@ import numpy as np
 import pandas as pd
 
 def get_data():    
-    data_loc = \
-      '/Users/evanbrydon/Documents/GitStuff/advent_of_code/2023/data'
+    data_loc = './data'
     fn = 'day4_data.txt'
     f = open(f'{data_loc}/{fn}')
     data = [line[:-1].split(sep = ':') for line in f]
