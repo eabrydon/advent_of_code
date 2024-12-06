@@ -18,7 +18,6 @@ def get_data():
     dmap = data[1].strip().split('\n')
     return dirs, dmap
 
-
 def make_mapdict(dmap):
     mapdict = {}
     for line in dmap:
@@ -42,10 +41,11 @@ def follow_map(dirs, mapdict, loc = 'AAA', end = 'ZZZ'):
 # Part 2
 
 def find_start_nodes(mapdict):
+    '''Find "a nodes" '''
     return [x for x in list(mapdict.keys()) if x[2] == 'A']
 
 def follow_map_p2(dirs, mapdict, nodes):
-    '''Not working, too many steps, need way to avoid doing every step
+    '''Not working, too many steps, need to avoid doing every step
     Did ~200M steps without a solution'''
     step_count = 0
     finished = False
@@ -62,6 +62,9 @@ def follow_map_p2(dirs, mapdict, nodes):
     return step_count
 
 def follow_map_to_z(node, dirs, i, mapdict):
+    '''From node and position i in the directions, find how many steps to the 
+    next z node
+    Returns steps and node name'''
     finished = False
     dirs = ''.join([dirs[i:],dirs[:i]])
     step_count = 0
@@ -78,6 +81,9 @@ def follow_map_to_z(node, dirs, i, mapdict):
     return (step_count, node)
 
 def find_z_to_z_steps(mapdict, dirs):
+    '''Makes a map of the steps counts and destination node for each znode to
+    get to another z node starting at a given point in the sequence
+    Can use this map to avoid moving 1 step at a time'''
     znodes = [x for x in list(mapdict.keys()) if x[2] == 'Z']
     step_dists = {}
     for node in znodes:
@@ -87,6 +93,8 @@ def find_z_to_z_steps(mapdict, dirs):
     return step_dists
 
 def find_a_to_z_steps(mapdict, dirs):
+    '''Finds the steps counts and destination nodes for each A node to reach
+    its first z node'''
     anodes = [x for x in list(mapdict.keys()) if x[2] == 'A']
     step_dists = []
     for node in anodes:
@@ -94,7 +102,8 @@ def find_a_to_z_steps(mapdict, dirs):
     return step_dists
 
 def query_zs_dm(node, step, zstep_distmap, dir_l):
-    '''Input: node, step total, map, length of directions
+    '''Helper function to query "zstep_distmap" 
+    Input: node, step total, map, length of directions
         Output: tuple: (new step number, new node)'''
     (ns, nn) = zstep_distmap[node][step%dir_l]
     return (ns+step, nn)
@@ -122,6 +131,7 @@ def find_all_zs(sn_tups, zstep_distmap):
             return steps
     
 def make_loop_map(zstep_distmap):
+    '''Make a map of all loops that could possibly occur'''
     loop_map = {}
     dir_l = len(zstep_distmap[list(zstep_distmap.keys())[0]].keys())    
     for node in zstep_distmap.keys():
@@ -147,6 +157,8 @@ def make_loop_map(zstep_distmap):
 # problem is trivial because its an edge case and I made a generalized solution :(
 
 def make_loop_map_small(zstep_distmap):
+    '''Make loop map for the case where we know each znode loop will not touch
+    any other znodes at any other points '''
     loop_map = {}
     dir_l = len(zstep_distmap[list(zstep_distmap.keys())[0]].keys())    
     for node in zstep_distmap.keys():
