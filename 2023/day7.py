@@ -20,6 +20,7 @@ def get_data():
     return hands, bids
 
 def make_hand_dict(hand):
+    '''Make dictionary for a hand'''
     hand_dict = {}
     for card in list(hand):
         try:
@@ -28,11 +29,10 @@ def make_hand_dict(hand):
             hand_dict[card] = 1
     return hand_dict
 
-def get_hand_type(hand):
-    '''Note for hand type: lowest number is better hand
+def assign_hand_type(cts):
+    '''Assign list of counts to hand type
+    Note for hand type: lowest number is better hand
     1 is 5oak, 2 is 4oak, 3 is fh, 4 is 3oak, 5 is 2p, 6 is 1p, 7 is hc'''
-    hand_dict = make_hand_dict(hand)
-    cts = sorted(hand_dict.values())
     if len(cts) == 1:
         return 1
     elif len(cts) == 2:
@@ -50,15 +50,24 @@ def get_hand_type(hand):
     else:
         return 7
 
+def get_hand_type(hand):
+    '''Get hand type by sorting counts of values'''
+    hand_dict = make_hand_dict(hand)
+    cts = sorted(hand_dict.values())
+    return assign_hand_type(cts)
+
 def convert_hands(hands, cdict):
-    '''Convert letters in hands to alpha order so we can use sorted fx'''
+    '''Convert letters in hands to alpha order so we can use sorted fx
+    Conversion dict must put letter cards in reverse alpha order for sorting'''
     all_hands = ''.join(hands)
     for k,v in cdict.items():
         all_hands = all_hands.replace(k,v)
     return [all_hands[i:i+5] for i in range(0, len(all_hands), 5)]
 
 def prep_df(hands_converted,bids,hand_types):
-    hand_df = pd.DataFrame(data = {'hand':hands_converted, 'bid':bids, 'htype':hand_types})
+    '''Make dataframe from converted hands with col for each card in hand'''
+    hand_df = pd.DataFrame(
+        data = {'hand':hands_converted, 'bid':bids, 'htype':hand_types})
     
     hand_df['hand'] = [list(h) for h in hand_df.hand]
     
@@ -67,14 +76,16 @@ def prep_df(hands_converted,bids,hand_types):
     return hand_df
 
 def calc_winnings(hand_df):
+    '''Sort hands and add cols for bid multiplier and winnings'''
     colnames = ['h1','h2','h3','h4','h5']
     hand_df = hand_df.sort_values(by = ['htype']+colnames, 
                                   ascending = [True, False, False, False, False, False])
     hand_df['bid_mult'] = [i for i in range(len(hand_df), 0, -1)]
     hand_df['winnings'] = hand_df.bid * hand_df.bid_mult
-    return hand_df\
+    return hand_df
 
 def run_p1():
+    '''Driver function for part 1'''
     conversion_dict = {
         'A':'e',
         'K':'d',
@@ -95,6 +106,7 @@ def run_p1():
 # Part 2
     
 def adjust_counts(hd):
+    '''Change counts to account for part 2 wild card change'''
     try:
         jokers = hd['0']
     except:
@@ -107,28 +119,8 @@ def adjust_counts(hd):
         cts = [5]
     return cts
 
-def assign_hand_type(cts):
-    '''Note for hand type: lowest number is better hand
-    1 is 5oak, 2 is 4oak, 3 is fh, 4 is 3oak, 5 is 2p, 6 is 1p, 7 is hc'''
-    if len(cts) == 1:
-        return 1
-    elif len(cts) == 2:
-        if cts[0] == 1:
-            return 2
-        elif cts[0] == 2:
-            return 3
-    elif len(cts) == 3:
-        if cts[-1] == 3:
-            return 4
-        elif cts[-1] == 2:
-            return 5
-    elif len(cts) == 4:
-        return 6
-    else:
-        return 7
-
-
 def run_p2():
+    '''Driver function for part 2'''
     conversion_dict = {
         'A':'e',
         'K':'d',
